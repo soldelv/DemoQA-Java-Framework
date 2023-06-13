@@ -1,8 +1,11 @@
 Feature: Login flow in DemoQA
 
-  Scenario Outline: Successfully login in DemoQA website
+  Background:
     Given The user access to the Books page
     When The user clicks on Login page
+    Then The user is on Login Page
+
+  Scenario Outline: Successfully login in DemoQA website
     And The user enters user <username> and password <password>
     Then The user is on the Home page
     Examples:
@@ -11,8 +14,6 @@ Feature: Login flow in DemoQA
 
 
   Scenario Outline: Unsuccessfully login with invalid user or password
-    Given The user access to the Books page
-    When The user clicks on Login page
     And The user enters user <username> and password <password>
     Then An Error message should be displayed
     Examples:

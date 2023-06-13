@@ -1,33 +1,25 @@
 package stepdefinitions;
 
-import io.cucumber.java.en.And;
+import factory.PageFactoryManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.Before;
-import io.cucumber.java.After;
-import org.openqa.selenium.WebDriver;
 import pages.RegisterPage;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class Register_Steps {
-    private WebDriver driver;
     RegisterPage registerPage;
+    private final TestContext context;
 
-    @Before
-    public void setUp() throws Exception{
-        registerPage = new RegisterPage(driver);
-        driver = registerPage.driverSetUp("https://demoqa.com/register");
-    }
-    @After
-    public void tearDown() throws Exception{
-        registerPage.driverTearDown();
+    public Register_Steps(TestContext context) {
+        this.context = context;
+        registerPage = PageFactoryManager.getRegisterPage(context.driver);
     }
 
     @Given("The user access to the Register page")
     public void theUserAccessToTheRegisterPage() {
-        // TO DO
+        registerPage.visit("https://demoqa.com/register");
         System.out.println("User already is on register page");
     }
 

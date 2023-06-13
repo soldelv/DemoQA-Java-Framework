@@ -2,7 +2,8 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.BasePage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.Random;
 
@@ -10,15 +11,23 @@ public class RegisterPage extends BasePage {
     public RegisterPage(WebDriver driver) {
         super(driver);
     }
-    By firstName = By.id("firstname");
-    By lastName = By.id("lastname");
-    By userName = By.id("userName");
-    By password = By.id("password");
-    By captcha_btn = By.id("g-recaptcha");
+    @FindBy(id = "firstname")
+    private WebElement firstName;
+    @FindBy(id = "lastname")
+    private WebElement lastName;
+    @FindBy(id = "userName")
+    private WebElement userName;
+    @FindBy(id = "password")
+    private WebElement password;
+    @FindBy(id = "g-recaptcha")
+    private WebElement captcha_btn;
     By captcha_marked = By.cssSelector("recaptcha-checkbox-checkmark");
-    By register_btn = By.id("register");
-    By backToLogin_btn = By.id("gotologin");
-    By registerMessage = By.id("gotologin");
+    @FindBy(id = "register")
+    private WebElement register_btn;
+    @FindBy(id = "gotologin")
+    private WebElement backToLogin_btn;
+    @FindBy(id = "gotologin")
+    private WebElement registerMessage;
 
     public void registerUser() throws InterruptedException {
         Random rnd = new Random(12);
@@ -31,13 +40,13 @@ public class RegisterPage extends BasePage {
         type(rnd_password, password);
 
         try{
-            click(findElement(captcha_btn));
+            click(captcha_btn);
         }catch(org.openqa.selenium.ElementClickInterceptedException e){
             handle_error(captcha_btn);
         }
         Thread.sleep(5000);
         try{
-            click(findElement(register_btn));
+            click(register_btn);
         }catch(org.openqa.selenium.ElementClickInterceptedException e){
             handle_error(register_btn);
         }

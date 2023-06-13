@@ -1,35 +1,48 @@
 package pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.BasePage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends BasePage {
     public LoginPage(WebDriver driver) {
         super(driver);
     }
-    By login_btn = By.id("login");
-    By username_locator = By.id("userName");
-    By password_locator = By.id("password");
-    By newUser_btn = By.id("newUser");
-    By logOut_btn = By.id("submit");
-    By failed_login_msg = By.id("name");
-    By goToLogin = By.id("gotologin");
+
+    @FindBy(id = "login")
+    private WebElement login_btn;
+
+    @FindBy(id = "userName")
+    private WebElement username_locator;
+    @FindBy(id = "password")
+    private WebElement password_locator;
+    @FindBy(id = "newUser")
+    private WebElement newUser_btn;
+    @FindBy(id = "submit")
+    private WebElement logOut_btn;
+    @FindBy(id = "name")
+    private WebElement failed_login_msg;
+    @FindBy(id = "gotologin")
+    private WebElement goToLogin;
 
 
     public void clickOnLogin(){
-        click(findElement(login_btn));
-        waitForElementToBeVisible(findElement(username_locator));
+        safeClick(login_btn);
+        waitForElementToBeVisible(username_locator);
+    }
+
+    public Boolean checkIsInLoginPage(){
+        return compareWithCurrentUrl("https://demoqa.com/login");
     }
 
     public void fillLoginForm(String username, String password){
         if(isDisplayed(login_btn)){
             type(username, username_locator);
             type(password, password_locator);
-            waitForElementToBeVisible(findElement(login_btn));
+            waitForElementToBeVisible(login_btn);
 
             try{
-                click(findElement(login_btn));
+                click(login_btn);
             }catch(org.openqa.selenium.ElementClickInterceptedException e){
                 handle_error(login_btn);
             }
@@ -39,11 +52,12 @@ public class LoginPage extends BasePage {
     }
 
     public boolean userIsLogged(){
-        waitForElementToBeVisible(findElement(logOut_btn));
+        waitForElementToBeVisible(logOut_btn);
         return isDisplayed(logOut_btn);
     }
 
     public String checkFailedLogin(){
+        waitForElementToBeVisible(failed_login_msg);
         if (isDisplayed(failed_login_msg)){
             return getText(failed_login_msg);
         }
@@ -58,8 +72,8 @@ public class LoginPage extends BasePage {
         }
     }
 
-    public Boolean checkRegisterPage(){
-        if(compareUrlWithCurrent("https://demoqa.com/register")){
+    public Boolean checkIsInRegisterPage(){
+        if(compareWithCurrentUrl("https://demoqa.com/register")){
             if (isDisplayed(goToLogin)){
                 click(goToLogin);
             }

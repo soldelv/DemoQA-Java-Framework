@@ -1,36 +1,20 @@
-package utils;
+package pages;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.function.BooleanSupplier;
+import static constants.Constants.EXPLICIT_WAIT;
 
 public class BasePage {
     private WebDriver driver;
-    private WebDriverWait waitDriver;
-    public int TIMEOUT = 30;
-    public int PAGE_LOAD_TIMEOUT = 50;
+    private WebDriverWait wait;
     public BasePage(WebDriver driver){
         this.driver = driver;
-    }
-
-    public WebDriver driverSetUp(String url){
-        System.setProperty("webdriver.chrome.driver","src/test/resources/drivers/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(url);
-        driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
-        return driver;
-    }
-
-    public void driverTearDown(){
-        driver.close();
-        driver.quit();
+        wait = new WebDriverWait(driver, EXPLICIT_WAIT);
+        PageFactory.initElements(driver, this);
     }
 
     public WebElement findElement(By locator){
@@ -53,6 +37,10 @@ public class BasePage {
         driver.findElement(locator).sendKeys(inputText);
     }
 
+    public void type(String inputText, WebElement element){
+        element.sendKeys(inputText);
+    }
+
     public void click(By locator){
         driver.findElement(locator).click();
     }
@@ -62,15 +50,14 @@ public class BasePage {
         element.click();
     }
 
-    public void safeClick(By locator){
+    public void safeClick(WebElement locator){
         try {
-            click(findElement(locator));
+            click(locator);
         }catch(ElementClickInterceptedException e){
             handle_error(locator);
         }
     }
-    public void handle_error(By locator){
-        WebElement element = driver.findElement(locator);
+    public void handle_error(WebElement element){
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         element.click();
     }
@@ -91,6 +78,14 @@ public class BasePage {
             return false;
         }
     }
+
+    public boolean isDisplayed(WebElement element){
+        try{
+            return element.isDisplayed();
+        }catch (org.openqa.selenium.NoSuchElementException e){
+            return false;
+        }
+    }
     public void visit(String url){
         driver.get(url);
     }
@@ -99,20 +94,15 @@ public class BasePage {
         return driver.getCurrentUrl();
     }
 
-    public Boolean compareUrlWithCurrent(String url){
-        return driver.getCurrentUrl().contains(url);
+    public Boolean compareWithCurrentUrl(String expected_url){
+        return driver.getCurrentUrl().contains(expected_url);
     }
 
-    public void setWaitDriver(WebDriverWait wait){
-        this.waitDriver = wait;
-    }
     public void waitForElementToBeVisible(WebElement element){
-        setWaitDriver(new WebDriverWait(driver,TIMEOUT));
-        waitDriver.until(ExpectedConditions.visibilityOf(element));
+        wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public void waitForElementToBeClickable(WebElement element){
-        setWaitDriver(new WebDriverWait(driver,TIMEOUT));
-        waitDriver.until(ExpectedConditions.elementToBeClickable(element));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 }

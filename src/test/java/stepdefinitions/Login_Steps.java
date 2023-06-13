@@ -1,38 +1,37 @@
 package stepdefinitions;
 
+import factory.PageFactoryManager;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.Before;
-import io.cucumber.java.After;
-import org.openqa.selenium.WebDriver;
 import pages.LoginPage;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class Login_Steps {
-    private WebDriver driver;
     private LoginPage loginPage;
+    private final TestContext context;
 
-    @Before
-    public void setUp() throws Exception{
-        loginPage = new LoginPage(driver);
-        driver = loginPage.driverSetUp("https://demoqa.com/books");
-    }
-    @After
-    public void tearDown() throws Exception{
-        loginPage.driverTearDown();
+    public Login_Steps(TestContext context){
+        this.context = context;
+        loginPage = PageFactoryManager.getLoginPage(context.driver);
     }
 
     @Given("The user access to the Books page")
     public void theUserAccessToTheBooksPage() {
+        loginPage.visit("https://demoqa.com/books");
         assert !loginPage.userIsLogged();
     }
 
     @When("The user clicks on Login page")
     public void theUserClicksOnLoginPage() {
         loginPage.clickOnLogin();
+    }
+
+    @Then("The user is on Login Page")
+    public void theUserIsOnLoginPage() {
+        assert loginPage.checkIsInLoginPage();
     }
 
     @And("^The user enters user (.*) and password (.*)$")
@@ -57,6 +56,7 @@ public class Login_Steps {
 
     @Then("The user is on Register page and goes back to Login page")
     public void theUserIsOnRegisterPageAndGoesBackToLoginPage() {
-        assert loginPage.checkRegisterPage();
+        assert loginPage.checkIsInRegisterPage();
     }
+
 }
