@@ -1,4 +1,4 @@
-Feature: Login flow in DemoQA
+Feature: Login flows in DemoQA
 
   Background:
     Given The user access to the Books page

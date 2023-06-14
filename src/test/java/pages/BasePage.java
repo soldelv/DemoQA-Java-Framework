@@ -1,6 +1,8 @@
 package pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -41,8 +43,23 @@ public class BasePage {
         element.sendKeys(inputText);
     }
 
+    public void clearAndType(String inputText, WebElement element){
+        element.clear();
+        element.sendKeys(inputText);
+
+    }
+
     public void click(By locator){
         driver.findElement(locator).click();
+    }
+
+    public void clickOnElement(WebElement element){
+        if (isDisplayed(element)){
+            safeClick(element);
+            System.out.println("Clicked on element "+element);
+        }else{
+            System.out.println("Element "+element+" is not displayed");
+        }
     }
 
     public void click(WebElement element){
@@ -56,6 +73,17 @@ public class BasePage {
         }catch(ElementClickInterceptedException e){
             handle_error(locator);
         }
+    }
+
+    public void doubleClick(WebElement element){
+        Actions action = new Actions(driver);
+        action.doubleClick(element).perform();
+
+    }
+    public void rightClick(WebElement element){
+        Actions action = new Actions(driver);
+        action.contextClick(element).perform();
+
     }
     public void handle_error(WebElement element){
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
@@ -100,6 +128,10 @@ public class BasePage {
 
     public void waitForElementToBeVisible(WebElement element){
         wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitUntilIsNotVisible(WebElement element){
+        wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     public void waitForElementToBeClickable(WebElement element){

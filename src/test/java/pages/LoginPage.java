@@ -65,18 +65,12 @@ public class LoginPage extends BasePage {
     }
 
     public void clickOnRegister(){
-        if (isDisplayed(newUser_btn)){
-            safeClick(newUser_btn);
-        }else{
-            System.out.println("Button New User is not displayed");
-        }
+        clickOnElement(newUser_btn);
     }
 
     public Boolean checkIsInRegisterPage(){
         if(compareWithCurrentUrl("https://demoqa.com/register")){
-            if (isDisplayed(goToLogin)){
-                click(goToLogin);
-            }
+            clickOnElement(goToLogin);
             return true;
         }
         return false;
