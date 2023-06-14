@@ -1,8 +1,12 @@
 # Test Automation Framework
 
 Created by Joana Sol Del Valle https://sites.google.com/view/sol-del-valle/english
+
 GitHub: https://github.com/soldelv
+
 LinkedIn: https://www.linkedin.com/in/jsoldelvalle/
+
+Portfolio: https://www.gitshowcase.com/soldelv
 
 ## Project Overview
 Test Automation Framework with Java, JUnit and Maven, BDD with Cucumber and Page Object Model design pattern
