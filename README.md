@@ -10,11 +10,11 @@ Reusable templates and structure
 
 ## Tech Stack
 
-'Java' 'Selenium' 'Maven' 'JUnit'
+`Java` `Maven` `JUnit` `Selenium`
 
-## Key File Description
+## Key Files Description
 
-'pom.xml' - this file contains all the dependencies that are being used by the application (and basically everything for the building/testing/deploying automation with Java)
+`pom.xml` - this file contains all the dependencies that are being used by the application (and basically everything for the building/testing/deploying automation with Java)
 
 ## Getting started
 
